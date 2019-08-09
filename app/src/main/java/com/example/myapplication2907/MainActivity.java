@@ -3,6 +3,7 @@ package com.example.myapplication2907;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -16,9 +17,9 @@ import com.example.myapplication2907.databinding.ActivityMainBinding;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements SelectedAnswer {
+public class MainActivity extends AppCompatActivity implements SelectedAnswer{
 
-    private QuestionViewModel viewModel;
+    public QuestionViewModel viewModel;
     MyRecyclerViewAdapter adapter;
 
     @Override
@@ -38,8 +39,15 @@ public class MainActivity extends AppCompatActivity implements SelectedAnswer {
 
             }
         });
+        viewModel.getResult().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                setContentView(R.layout.result);
+                TextView tv=(TextView)findViewById(R.id.result);
+                tv.setText(s);
+            }
+        });
 
-        //int numberOfQuestion=viewModel.getNumberOfQuestion();
         adapter = new MyRecyclerViewAdapter(this);
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -50,16 +58,26 @@ public class MainActivity extends AppCompatActivity implements SelectedAnswer {
 
     @Override
     public void answerSelected(Answer answer) {
+        viewModel.processAnswer(answer.vector);
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
 
             @Override
             public void run() {
+
                 viewModel.nextQuestion();
             }
         }, 1000L);
 
     }
+
+    public void finish(){
+        setContentView(R.layout.result);
+        TextView tv=(TextView)findViewById(R.id.result);
+        tv.setText(Calculate.firstReligion(Calculate.totalAnswer));
+    }
+
+
 }
 
 

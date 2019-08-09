@@ -4,6 +4,6 @@ import java.util.List;
 
 public class Answer {
     public String title;
-    List<Integer> vector;
+    public List<Integer> vector;
 
 }

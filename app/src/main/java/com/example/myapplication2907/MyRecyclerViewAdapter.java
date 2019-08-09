@@ -35,7 +35,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyRecyclerViewAdapter.MyViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final MyRecyclerViewAdapter.MyViewHolder holder, final int position) {
         final Answer answer=mAnswerList.get(position);
         Log.d("holder",answer.title);
         holder.currentAnswer.setText(answer.title);
@@ -43,9 +43,8 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         holder.currentAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("holder ", String.valueOf(position));
+                Log.i("answer ", String.valueOf(position));
                 listener.answerSelected(answer);
-
             }
         });
 
@@ -55,6 +54,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     public int getItemCount() {
         return mAnswerList.size();
     }
+
     static class MyViewHolder extends RecyclerView.ViewHolder{
         private RadioButton currentAnswer;
 
