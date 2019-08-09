@@ -1,2 +1,2 @@
-JAVA-app for Android
+JAVA-app for Android.
 test about religion
