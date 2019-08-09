@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,7 +16,7 @@ import com.example.myapplication2907.databinding.ActivityMainBinding;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements SelectedAnswer{
+public class MainActivity extends AppCompatActivity implements SelectedAnswer {
 
     public QuestionViewModel viewModel;
     MyRecyclerViewAdapter adapter;
@@ -27,25 +26,19 @@ public class MainActivity extends AppCompatActivity implements SelectedAnswer{
         super.onCreate(savedInstanceState);
         final ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         viewModel = ViewModelProviders.of(this).get(QuestionViewModel.class);
-        viewModel.getQuestion().observe(this, new Observer<Question>() {
-            @Override
-            public void onChanged(Question question) {
-                List<Answer> answerList = question.a;
-                System.out.println(answerList.get(0).title);
-                binding.setQuestion(question);
-                adapter.setmAnswerList(answerList);
-                adapter.notifyDataSetChanged();
-                Log.d("MainActivity", question.q);
+        viewModel.getQuestion().observe(this, question -> {
+            List<Answer> answerList = question.a;
+            System.out.println(answerList.get(0).title);
+            binding.setQuestion(question);
+            adapter.setmAnswerList(answerList);
+            adapter.notifyDataSetChanged();
+            Log.d("MainActivity", question.q);
 
-            }
         });
-        viewModel.getResult().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                setContentView(R.layout.result);
-                TextView tv=(TextView)findViewById(R.id.result);
-                tv.setText(s);
-            }
+        viewModel.getResult().observe(this, s -> {
+            setContentView(R.layout.result);
+            TextView tv = (TextView) findViewById(R.id.result);
+            tv.setText(s);
         });
 
         adapter = new MyRecyclerViewAdapter(this);
@@ -60,20 +53,13 @@ public class MainActivity extends AppCompatActivity implements SelectedAnswer{
     public void answerSelected(Answer answer) {
         viewModel.processAnswer(answer.vector);
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-
-                viewModel.nextQuestion();
-            }
-        }, 1000L);
+        handler.postDelayed(() -> viewModel.nextQuestion(), 1000L);
 
     }
 
-    public void finish(){
+    public void finish() {
         setContentView(R.layout.result);
-        TextView tv=(TextView)findViewById(R.id.result);
+        TextView tv = (TextView) findViewById(R.id.result);
         tv.setText(Calculate.firstReligion(Calculate.totalAnswer));
     }
 

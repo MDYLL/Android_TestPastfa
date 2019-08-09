@@ -14,16 +14,15 @@ import java.util.List;
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.MyViewHolder> {
 
     private List<Answer> mAnswerList;
-    SelectedAnswer listener;
+    private SelectedAnswer listener;
 
     MyRecyclerViewAdapter(SelectedAnswer listener) {
-        this.listener=listener;
+        this.listener = listener;
     }
 
-    public void setmAnswerList(List<Answer> answerList){
-        mAnswerList=answerList;
+    void setmAnswerList(List<Answer> answerList) {
+        mAnswerList = answerList;
     }
-
 
 
     @NonNull
@@ -36,8 +35,8 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
 
     @Override
     public void onBindViewHolder(@NonNull final MyRecyclerViewAdapter.MyViewHolder holder, final int position) {
-        final Answer answer=mAnswerList.get(position);
-        Log.d("holder",answer.title);
+        final Answer answer = mAnswerList.get(position);
+        Log.d("holder", answer.title);
         holder.currentAnswer.setText(answer.title);
         holder.currentAnswer.setChecked(false);
         holder.currentAnswer.setOnClickListener(new View.OnClickListener() {
@@ -55,7 +54,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         return mAnswerList.size();
     }
 
-    static class MyViewHolder extends RecyclerView.ViewHolder{
+    static class MyViewHolder extends RecyclerView.ViewHolder {
         private RadioButton currentAnswer;
 
         MyViewHolder(View itemView) {

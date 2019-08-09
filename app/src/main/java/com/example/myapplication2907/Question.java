@@ -5,6 +5,6 @@ import java.util.List;
 public class Question {
 
     public String q;
-    public List<Answer> a;
+    List<Answer> a;
 
 }
